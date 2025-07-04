@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Face Recognition</title>
+    <style>
+        /* Optional styling */
+        body { font-family: Arial, sans-serif; text-align: center; }
+        h1 { margin-top: 20px; }
+        #video_stream { border: 1px solid black; max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h1>Real-time Face Recognition</h1>
+    <img id="video_stream" src="{{ url_for('video_feed') }}" width="640" height="480">
+    <p>Detected faces will be highlighted with names or "Unknown".</p>
+    <p>Navigate to this page in your browser: http://127.0.0.1:5000/</p>
+</body>
+</html>

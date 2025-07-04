@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Recognition Stream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .video-container {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        img {
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Recognition Live Stream</h1>
+    <div class="video-container">
+        <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+    </div>
+    <div class="controls">
+        <button onclick="stopCamera()">Stop Camera</button>
+    </div>
+    
+    <script>
+        function stopCamera() {
+            fetch('/stop', {method: 'POST'})
+                .then(response => {
+                    console.log('Camera stopped');
+                    alert('Camera has been stopped');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
+        
