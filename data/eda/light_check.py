@@ -52,13 +52,14 @@ def explore_directory_lightness(directory_path):
     image_lightness_data = {}
     for subdir in os.listdir(directory_path):
         subdir_path = os.path.join(directory_path, subdir)
-        # print(f"Exploring subdirectory: {subdir_path}")        
-        for filename in os.listdir(subdir_path):
-            file_path = os.path.join(subdir_path, filename)
-            if os.path.isfile(file_path):
-                lightness = get_image_lightness(file_path)
-                if lightness is not None:
-                    image_lightness_data[filename] = lightness
+        if os.path.isdir(subdir_path):  # Ensure it's a directory before processing
+            # print(f"Exploring subdirectory: {subdir_path}")        
+            for filename in os.listdir(subdir_path):
+                file_path = os.path.join(subdir_path, filename)
+                if os.path.isfile(file_path):
+                    lightness = get_image_lightness(file_path)
+                    if lightness is not None:
+                        image_lightness_data[filename] = lightness
 
     return image_lightness_data
 
