@@ -13,18 +13,18 @@ def get_image_lightness(image_path):
                the file is not a valid image.
     """
     try:
-        img = Image.open(image_path)
-        # Convert to grayscale if not already to simplify lightness calculation
-        if img.mode != 'L' and img.mode != 'RGB':
-             img = img.convert('RGB') # Convert other modes to RGB first
+        with Image.open(image_path) as img:
+            # Convert to grayscale if not already to simplify lightness calculation
+            if img.mode != 'L' and img.mode != 'RGB':
+                img = img.convert('RGB') # Convert other modes to RGB first
 
-        if img.mode == 'L':
-             stat = ImageStat.Stat(img)
-             return stat.mean[0]
-        elif img.mode == 'RGB':
-             stat = ImageStat.Stat(img)
-             # Simple average of RGB channel means as a proxy for lightness
-             return sum(stat.mean) / len(stat.mean)
+            if img.mode == 'L':
+                stat = ImageStat.Stat(img)
+                return stat.mean[0]
+            elif img.mode == 'RGB':
+                stat = ImageStat.Stat(img)
+                # Simple average of RGB channel means as a proxy for lightness
+                return sum(stat.mean) / len(stat.mean)
 
     except IOError:
         print(f"Warning: Could not open or read image file: {image_path}")
