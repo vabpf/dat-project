@@ -1,4 +1,5 @@
-label,image
+label,image_path
+Ca Sĩ Lamoon Diễm Hằng,20
 ca sĩ Akira Phan,41
 ca sĩ Anh Thơ,41
 ca sĩ Bằng Kiều,42
@@ -16,6 +17,7 @@ ca sĩ Doãn Hiếu,34
 ca sĩ Don Nguyễn,33
 ca sĩ Dương Triệu Vũ,39
 ca sĩ Emily,34
+ca sĩ Enrique Iglesias,2
 ca sĩ Erik,46
 ca sĩ Fanny Trần,35
 ca sĩ Gin Tuấn Kiệt,43
@@ -47,68 +49,71 @@ ca sĩ Leg,31
 ca sĩ Lê Bảo Bình,39
 ca sĩ Luna Đào,41
 ca sĩ Lương Bích Hữu,46
-ca sĩ Lynk Lee,47
+ca sĩ Lynk Lee,44
 ca sĩ Lý Hải,34
-ca sĩ Mạnh Quỳnh,46
-ca sĩ Min,42
-ca sĩ Minh Hằng,45
-ca sĩ Minh Tuyết,40
-ca sĩ Minh Vương,26
-ca sĩ Miu Lê,43
-ca sĩ Mr. Siro,36
-ca sĩ Mỹ Tâm,39
-ca sĩ Ngô Kiến Huy,46
-ca sĩ Nguyễn Hương Ly,31
-ca sĩ Nhật Kim Anh,42
-ca sĩ Như Quỳnh,44
-ca sĩ Noo Phước Thịnh,41
-ca sĩ Ông Cao Thắng,36
-ca sĩ Phạm Quỳnh Anh,39
-ca sĩ Phi Nhung,40
-ca sĩ Phương Mỹ Chi,43
-ca sĩ Phương Thanh,45
-ca sĩ Phương Trinh Jolie,40
-ca sĩ Quang Lập,42
-ca sĩ Quang Lê,47
-ca sĩ Rhymastic,34
-ca sĩ S.T Sơn Thạch,43
-ca sĩ Saka Trương Tuyền,36
-ca sĩ Sĩ Thanh,46
-ca sĩ Soobin,41
-ca sĩ Soobin Hoàng Sơn,43
-ca sĩ Sơn Tùng,47
-ca sĩ Suboi,33
-ca sĩ Suni Hạ Linh,39
-ca sĩ Thanh Duy,44
-ca sĩ Thiều Bảo Trâm,44
-ca sĩ Thu Minh,40
-ca sĩ Thuỷ Tiên,38
-ca sĩ Thùy Chi,48
-ca sĩ Thương Võ,38
-ca sĩ Tiết Chi Khiêm,29
-ca sĩ Tóc Tiên,38
-ca sĩ Trịnh Thăng Bình,45
-ca sĩ Trương Kiệt,33
-ca sĩ Trương Quỳnh Anh,41
-ca sĩ Trương Thế Vinh,41
-ca sĩ Tuấn Hưng,45
-ca sĩ Ưng Hoàng Phúc,47
-ca sĩ Vanh Leg,35
-ca sĩ Văn Mai Hương,46
+ca sĩ Mạnh Quỳnh,42
+ca sĩ Min,37
+ca sĩ Minh Hằng,42
+ca sĩ Minh Tuyết,35
+ca sĩ Minh Vương,21
+ca sĩ Miu Lê,38
+ca sĩ Mr. Siro,27
+ca sĩ Mỹ Tâm,37
+ca sĩ Ngô Kiến Huy,40
+ca sĩ Nguyễn Hương Ly,27
+ca sĩ Nhật Kim Anh,36
+ca sĩ Như Quỳnh,40
+ca sĩ Noo Phước Thịnh,35
+ca sĩ Ông Cao Thắng,29
+ca sĩ Phạm Quỳnh Anh,33
+ca sĩ Phi Nhung,35
+ca sĩ Phương Mỹ Chi,40
+ca sĩ Phương Thanh,37
+ca sĩ Phương Trinh Jolie,36
+ca sĩ Quang Lê,30
+ca sĩ Rhymastic,23
+ca sĩ S.T Sơn Thạch,36
+ca sĩ Saka Trương Tuyền,31
+ca sĩ Sĩ Thanh,20
+ca sĩ Soobin Hoàng Sơn,20
+ca sĩ Sơn Tùng,40
+ca sĩ Suboi,26
+ca sĩ Suni Hạ Linh,37
+ca sĩ Thanh Duy,38
+ca sĩ Thiều Bảo Trâm,38
+ca sĩ Thu Minh,37
+ca sĩ Thuỷ Tiên,32
+ca sĩ Thùy Chi,45
+ca sĩ Thương Võ,35
+ca sĩ Tiết Chi Khiêm,24
+ca sĩ Tóc Tiên,33
+ca sĩ Trịnh Thăng Bình,35
+ca sĩ Trương Kiệt,28
+ca sĩ Trương Quỳnh Anh,36
+ca sĩ Trương Thế Vinh,37
+ca sĩ Tuấn Hưng,39
+ca sĩ Ưng Hoàng Phúc,45
+ca sĩ Vanh Leg,31
+ca sĩ Văn Mai Hương,43
 ca sĩ Việt Johan,28
-ca sĩ Vũ Cát Tường,38
-ca sĩ Vương Lạc Đan,33
+ca sĩ Vũ Cát Tường,23
 ca sĩ Đan Trường,44
 ca sĩ Đàm Vĩnh Hưng,48
 ca sĩ Đăng Khôi,34
 ca sĩ Đinh Duy Chinh,21
 ca sĩ Đông Nhi,38
-diễn viên Angela Phương Trinh,48
-diễn viên Âu Hào,30
-diễn viên Bảo Suzu,35
-diễn viên Bạch Kính Đình,41
-diễn viên Bình An,41
-diễn viên Cận Đông,36
+ca sĩ G-Dragon,20
+ca sĩ Gung0Cay,20
+ca sĩ Hiếu Thứ Hai,20
+ca sĩ J97,23
+ca sĩ MONO,30
+ca sĩ Quang Hùng MasterD,20
+diễn viên Angela Phương Trinh,43
+diễn viên Âu Hào,28
+diễn viên Bảo Suzu,28
+diễn viên Bạch Kính Đình,34
+diễn viên Bình An,37
+diễn viên Cận Đông,34
 diễn viên Chi Pu,44
 diễn viên Chu Nhất Long,43
 diễn viên Cung Lê,27
@@ -165,6 +170,7 @@ diễn viên Shahrukh Khan,35
 diễn viên Tần Lam,45
 diễn viên Tần Tuấn Kiệt,33
 diễn viên Thanh Mai,44
+diễn viên Thịnh Sếu,10
 diễn viên Thúy Diễm,34
 diễn viên Thúy Kiều Faptv,32
 diễn viên Tôn Di,39
@@ -172,6 +178,7 @@ diễn viên Tôn Hồng Lôi,30
 diễn viên Tống Thiến (Victoria),44
 diễn viên Tống Tổ Nhi,45
 diễn viên Tống Uy Long,48
+diễn viên Trần Bách Lâm,14
 diễn viên Trần Hách,32
 diễn viên Trần Học Đông,39
 diễn viên Trịnh Khải,32
@@ -197,6 +204,7 @@ diễn viên Vu Mông Lung,38
 diễn viên Vương Âu,40
 diễn viên Vương Bảo Cường,27
 diễn viên Vương Khải,30
+diễn viên Vương Tổ Lam,17
 diễn viên Vương Tử Văn,31
 diễn viên Vương Đại Lục,35
 diễn viên Yaya,41
@@ -217,3 +225,7 @@ hoa hậu Nguyễn Thị Ánh Ngọc,32
 hoa hậu Nguyễn Thúc Thùy Tiên,40
 hoa hậu Phạm Hương,46
 hoa hậu Rinrada Thurapan,45
+hoa hậu Hoàng Phương Linh,22
+hoa hậu Phương Nhi,20
+hoa hậu Thanh Thủy,20
+người mẫu Phạm Tuấn Ngọc,20
