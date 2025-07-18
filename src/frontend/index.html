@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Face Comparison</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f0f2f5; margin: 0; padding: 20px; box-sizing: border-box; }
+        .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1200px; width: 100%; justify-content: center; }
+        .video-container, .results-container { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 20px; box-sizing: border-box; }
+        .video-container { flex: 1; min-width: 300px; max-width: 600px; position: relative; display: flex; flex-direction: column; align-items: center; }
+        video { width: 100%; max-width: 640px; height: auto; border-radius: 4px; background-color: #eee; }
+        canvas { display: none; }
+        .face-bbox { position: absolute; border: 2px solid #00ff00; box-sizing: border-box; pointer-events: none; }
+        .results-container { flex: 1; min-width: 300px; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
+        h1 { color: #333; margin-bottom: 20px; }
+        h2 { color: #555; margin-top: 0; margin-bottom: 10px; }
+        p { margin: 5px 0; color: #666; }
+        .match-status { font-size: 1.2em; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; }
+        .match { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .no-match { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .no-face { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .error { background-color: #e0e0e0; color: #666; border: 1px solid #ccc; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; font-size: 2em; color: #333; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">Loading...</div>
+
+    <h1>Real-Time Face Comparison</h1>
+
+    <div class="container">
+        <div class="video-container">
+            <h2>Live Camera Feed</h2>
+            <video id="video" autoplay playsinline muted></video>
+            <!-- Bounding box is positioned relative to this container -->
+            <div id="faceBbox" class="face-bbox" style="display: none;"></div>
+        </div>
+
+        <div class="results-container">
+            <h2>Comparison Results</h2>
+            <div id="results" class="match-status error">Waiting for camera...</div>
+            <p><strong>Status:</strong> <span id="statusMessage">Initializing...</span></p>
+            <p id="matchInfo" style="display: none;">
+                <strong>Matched Name:</strong> <span id="matchedName"></span><br>
+                <strong>Similarity:</strong> <span id="similarityScore"></span>
+            </p>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const resultsDiv = document.getElementById('results');
+        const statusMessageSpan = document.getElementById('statusMessage');
+        const matchInfoDiv = document.getElementById('matchInfo');
+        const matchedNameSpan = document.getElementById('matchedName');
+        const similarityScoreSpan = document.getElementById('similarityScore');
+        const faceBboxDiv = document.getElementById('faceBbox');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        let stream;
+        let intervalId;
+        const FPS = 2; // Frames per second to send to backend
+        const SEND_INTERVAL = 1000 / FPS;
+
+        // Hide loading overlay once JS starts
+        document.addEventListener('DOMContentLoaded', () => {
+            if(loadingOverlay) loadingOverlay.style.display = 'none';
+        });
+
+        async function startWebcam() {
+            try {
+                resultsDiv.className = 'match-status error';
+                resultsDiv.textContent = 'Starting camera...';
+                statusMessageSpan.textContent = 'Requesting camera access...';
+                matchInfoDiv.style.display = 'none';
+                faceBboxDiv.style.display = 'none';
+
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+                    // Set canvas dimensions once video is loaded
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    startSendingFrames();
+                    resultsDiv.className = 'match-status no-face';
+                    resultsDiv.textContent = 'Searching...';
+                    statusMessageSpan.textContent = 'Camera active. Looking for faces.';
+                };
+            } catch (err) {
+                console.error("Error accessing webcam: ", err);
+                resultsDiv.className = 'match-status error';
+                resultsDiv.textContent = 'Error: No Webcam';
+                statusMessageSpan.textContent = `Error: ${err.name}. Please allow camera access.`;
+            }
+        }
+
+        function stopWebcam() {
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            if (intervalId) clearInterval(intervalId);
+            video.srcObject = null;
+            resultsDiv.className = 'match-status error';
+            resultsDiv.textContent = 'Webcam stopped.';
+            statusMessageSpan.textContent = 'Camera off.';
+            matchInfoDiv.style.display = 'none';
+            faceBboxDiv.style.display = 'none';
+        }
+
+        function startSendingFrames() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageDataURL = canvas.toDataURL('image/jpeg', 0.8);
+
+                    // ## FIX 1: Split the string to remove the "data:image/jpeg;base64," prefix.
+                    const base64Image = imageDataURL.split(',')[1];
+
+                    fetch('/compare_face', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: base64Image }), // Send only the raw base64 data
+                    })
+                    .then(response => {
+                        if (!response.ok) { // Catches 4xx and 5xx errors
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        updateResults(data);
+                    })
+                    .catch(error => {
+                        console.error('Error sending frame:', error);
+                        resultsDiv.className = 'match-status error';
+                        resultsDiv.textContent = 'Server Error';
+                        statusMessageSpan.textContent = `Communication failed: ${error.message}`;
+                        faceBboxDiv.style.display = 'none';
+                    });
+                }
+            }, SEND_INTERVAL);
+        }
+
+        // ## FIX 2: Completely rewritten function to handle the consistent backend response
+        function updateResults(data) {
+            statusMessageSpan.textContent = data.message || 'Processing...';
+            faceBboxDiv.style.display = 'none'; // Hide bbox by default
+            matchInfoDiv.style.display = 'none'; // Hide match details by default
+
+            if (data.status === 'error') {
+                resultsDiv.className = 'match-status error';
+                resultsDiv.textContent = 'Server Error';
+                statusMessageSpan.textContent = data.message;
+                return;
+            }
+
+            // Draw bounding box if coordinates are provided
+            if (data.face_coordinates) {
+                const coords = data.face_coordinates;
+                const videoRect = video.getBoundingClientRect();
+                const scaleX = videoRect.width / canvas.width;
+                const scaleY = videoRect.height / canvas.height;
+
+                faceBboxDiv.style.left = `${coords.x * scaleX}px`;
+                faceBboxDiv.style.top = `${coords.y * scaleY}px`;
+                faceBboxDiv.style.width = `${coords.w * scaleX}px`;
+                faceBboxDiv.style.height = `${coords.h * scaleY}px`;
+                faceBboxDiv.style.display = 'block';
+            }
+
+            // Update results based on whether a match was found
+            if (data.match) {
+                resultsDiv.className = 'match-status match';
+                resultsDiv.textContent = 'Match Found!';
+                matchInfoDiv.style.display = 'block';
+                matchedNameSpan.textContent = data.match.name;
+                similarityScoreSpan.textContent = data.match.similarity.toFixed(3);
+            } else if (data.face_coordinates) {
+                // A face was seen, but no match
+                resultsDiv.className = 'match-status no-match';
+                resultsDiv.textContent = 'No Match Found';
+            } else {
+                // No face was seen at all
+                resultsDiv.className = 'match-status no-face';
+                resultsDiv.textContent = 'Searching...';
+            }
+        }
+
+        window.addEventListener('load', startWebcam);
+        window.addEventListener('beforeunload', stopWebcam);
+    </script>
+</body>
+</html>

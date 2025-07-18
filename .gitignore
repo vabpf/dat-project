@@ -5,4 +5,6 @@ data/vn-celeb-data.parquet
 .vscode/
 .idx/
 .vscode/
-models/pretrained-weight/
+models/weights/
+package*
+webpack*
