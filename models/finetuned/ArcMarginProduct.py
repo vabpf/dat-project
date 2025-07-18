@@ -56,8 +56,17 @@ class ArcMarginProduct(Layer):
 def aamsoftmax_loss(y_true, y_pred, s=30.0, m=0.50):
     """
     Additive Angular Margin Softmax Loss as a custom loss function.
-    `y_true` must be one-hot encoded.
-    `y_pred` are the cosine similarities (logits) from the ArcMarginProduct layer.
+    
+    Parameters:
+    - y_true: Tensor or NumPy array of shape (batch_size, n_classes), where each row is a one-hot encoded vector 
+      representing the true class labels. Must be of type float32 or float64.
+    - y_pred: Tensor or NumPy array of shape (batch_size, n_classes), containing the cosine similarities (logits) 
+      from the ArcMarginProduct layer. Must be of type float32 or float64.
+    - s: Float. Scale factor for the logits. Default is 30.0.
+    - m: Float. Additive angular margin. Default is 0.50.
+    
+    Returns:
+    - loss: Tensor containing the computed categorical cross-entropy loss.
     """
     # Clip the cosine values to prevent numerical instability with acos
     cosine = tf.clip_by_value(y_pred, -1.0 + K.epsilon(), 1.0 - K.epsilon())
