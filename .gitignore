@@ -1,4 +1,8 @@
 __pycache__/
 data/vn-celeb-data.parquet
 .idx/
+.venv/
 .vscode/
+.idx/
+.vscode/
+models/pretrained-weight/
