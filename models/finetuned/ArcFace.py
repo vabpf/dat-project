@@ -11,8 +11,9 @@ from tensorflow.keras.layers import (
     Dense,
 )
 
-WEIGHTS_PATH="/home/user/dat-project/models/pretrained-weight/arcface_weights.h5"
+import os
 
+WEIGHTS_PATH = os.getenv("ARC_FACE_WEIGHTS_PATH", "models/pretrained-weight/arcface_weights.h5")
 def load_model(
     path=WEIGHTS_PATH
 ) -> Model:
